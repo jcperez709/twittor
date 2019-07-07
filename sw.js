@@ -1,8 +1,8 @@
 //imports
 importScripts('js/sw-utils.js');
 
-const STATIC_CACHE = 'static-v3';
-const DYNAMIC_CACHE = 'dynamic-v1';
+const STATIC_CACHE = 'static-v4';
+const DYNAMIC_CACHE = 'dynamic-v2';
 const INMUTABLE_CACHE = 'inmutable-v1';
 
 const APP_STATIC = [
@@ -47,11 +47,14 @@ self.addEventListener('activate', e =>{
     //Borrar todos los caches estatisco que son diferentes al de la última instalación
     const respuesta = caches.keys().then( keys => {
         keys.forEach( key =>{
-            //Se compara contra el nombre del cache instalado
+            //Se compara contra el nombre del cache estatico instalado
             if(key !== STATIC_CACHE &&  key.includes( 'static' )){
                 return caches.delete(key);
             };
-        });
+            //Se compara contra el nombre del cache dinamico instalado
+            if(key !== DYNAMIC_CACHE &&  key.includes( 'dynamic' )){
+                return caches.delete(key);
+            };        });
     });
 
     e.waitUntil(respuesta);    
